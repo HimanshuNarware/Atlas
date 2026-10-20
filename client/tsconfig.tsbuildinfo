@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/DocReaderDashboard.tsx","./src/components/GeminiThinkingLoader.tsx","./src/components/HilosArt.tsx","./src/components/InteractiveRoom.tsx","./src/components/MarkdownRenderer.tsx","./src/components/UserManagement.tsx","./src/services/api.ts","./src/types/index.ts"],"version":"5.9.3"}
