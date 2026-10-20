@@ -1,8 +1,8 @@
 import { ApiResponse, LoginResponse, User, DocUploadResponse, DocAnsResponse, DocHistoryItem } from '../types';
 
 // In dev, defaults to http://localhost:5000. In production builds served by Nginx proxy, defaults to '' (relative path).
-const BASE_URL = import.meta.env.VITE_API_URL !== undefined
-  ? import.meta.env.VITE_API_URL
+const BASE_URL = import.meta.env.API_URL !== undefined
+  ? import.meta.env.API_URL
   : (import.meta.env.DEV ? 'http://localhost:5000' : '');
 
 function getHeaders(token?: string, adminToken?: string): HeadersInit {

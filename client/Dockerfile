@@ -12,8 +12,8 @@ RUN npm ci
 COPY . .
 
 # Optional build-time argument to override API URL if not using reverse proxy
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
+ARG API_URL
+ENV API_URL=$API_URL
 
 # Build production bundle to dist/
 RUN npm run build
