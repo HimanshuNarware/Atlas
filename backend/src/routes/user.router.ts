@@ -68,6 +68,13 @@ userRouter.put('/:id', authenticateToken, validateParams(userIdParamSchema), val
 userRouter.get('/', requireAdmin, userController.listUsers);
 
 /**
+ * @route   GET /users/me
+ * @desc    Get currently authenticated user's profile
+ * @access  Authenticated User
+ */
+userRouter.get('/me', authenticateToken, userController.getMe);
+
+/**
  * @route   GET /users/:id
  * @desc    Get user details by ID
  * @access  Authenticated User

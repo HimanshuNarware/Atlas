@@ -192,6 +192,84 @@ export class DocReaderService {
     }
   }
 
+  private isThanksQuery(text: string): boolean {
+    const cleaned = text
+      .trim()
+      .toLowerCase()
+      .replace(/[?!.,;:!~@#$%^&*()_+=<>/{}[\]|\\-]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!cleaned) return false;
+
+    const singleWordThanks = new Set([
+      'thanks',
+      'thankyou',
+      'thank',
+      'thx',
+      'thnx',
+      'thnk',
+      'thnks',
+      'thnka',
+      'thnkz',
+      'ty',
+      'tysm',
+      'appreciated',
+    ]);
+    if (singleWordThanks.has(cleaned)) {
+      return true;
+    }
+
+    const thanksPatterns = [
+      /^(thank|thanks|thnka|thnk|thanku|thx|thnx|ty|tysm)(\s+(you|u|atlas|so\s+much|very\s+much|a\s+lot|again))*$/,
+      /^(thank\s+(you|u)|thnka\s+(you|u)|thnk\s+(you|u))\s*(so\s+much|very\s+much|a\s+lot|atlas)?$/,
+      /^(many\s+thanks)(\s+atlas)?$/,
+      /^(much\s+appreciated)(\s+atlas)?$/,
+      /^(i\s+)?appreciate\s+(it|this|your\s+help)(\s+atlas)?$/,
+      /^(good|great|awesome|wonderful|nice)\s+job(\s+atlas)?$/,
+    ];
+
+    return thanksPatterns.some((pattern) => pattern.test(cleaned));
+  }
+
+  private isConversationalQuery(text: string): boolean {
+    const cleaned = text
+      .trim()
+      .toLowerCase()
+      .replace(/[?!.,;:!~@#$%^&*()_+=<>/{}[\]|\\-]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!cleaned) return true;
+
+    const singleWordGreetings = new Set([
+      'hi', 'hii', 'hiii', 'hello', 'helloo', 'hellooo', 'hey', 'heyy', 'heyyy',
+      'hola', 'howdy', 'greetings', 'sup', 'yo'
+    ]);
+    if (singleWordGreetings.has(cleaned)) {
+      return true;
+    }
+
+    const conversationalPatterns = [
+      /^(hi|hello|hey|hola|greetings|howdy|yo)\s+(atlas|there|docreader|bot|friend)?$/,
+      /^(good\s+(morning|afternoon|evening|day|night))(\s+atlas)?$/,
+      /^(who\s+are\s+(you|u))(\s+atlas)?$/,
+      /^(what\s+is\s+your\s+name)(\s+atlas)?$/,
+      /^(what\s+can\s+(you|u)\s+do)$/,
+      /^(what\s+do\s+(you|u)\s+do)$/,
+      /^(who\s+is\s+atlas)$/,
+      /^(what\s+is\s+atlas)$/,
+      /^(how\s+are\s+(you|u))(\s+doing)?$/,
+      /^(what\s*'?s\s+up)$/,
+      /^(help(\s+me)?)$/,
+      /^(how\s+to\s+use(\s+this)?)$/,
+      /^(how\s+does\s+this\s+work)$/,
+      /^(tell\s+me\s+about\s+yourself)$/
+    ];
+
+    return conversationalPatterns.some((pattern) => pattern.test(cleaned));
+  }
+
   /**
    * Question answering workflow:
    * 1. Embed user question using Google GenAI
@@ -204,6 +282,32 @@ export class DocReaderService {
     }
 
     logger.info(`Processing Q&A query: "${question}" (documentId: ${documentId || 'all'})`);
+
+    // Handle "thank you" / gratitude queries with a warm, welcoming reply
+    if (this.isThanksQuery(question)) {
+      logger.info(`Recognized gratitude/thanks query: "${question}". Returning welcome response.`);
+      return {
+        question,
+        documentId,
+        answer:
+          "You're very welcome! 😊 I'm always happy to help. Let me know if you need more insights, summaries, or citations from your documents!",
+        citations: [],
+        retrievedChunksCount: 0,
+      };
+    }
+
+    // Handle conversational greetings and introductions without querying vector database
+    if (this.isConversationalQuery(question)) {
+      logger.info(`Recognized conversational query: "${question}". Returning Atlas introduction.`);
+      return {
+        question,
+        documentId,
+        answer:
+          "Hello! I am Atlas, your AI document reading specialist.\n\nHere is what I can do:\n- Extract, recursively chunk, and generate dense vector embeddings from your PDF, DOCX, or TXT documents.\n- Perform semantic cosine similarity search to retrieve exact relevant passages.\n- Provide factually grounded answers with verified page citations and reasoning criteria.\n\nTo get started, please attach or upload a PDF document and ask any question about its contents!",
+        citations: [],
+        retrievedChunksCount: 0,
+      };
+    }
 
     // 10. Generate question embedding
     const queryVector = await googleGenAIService.embedText(question);

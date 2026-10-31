@@ -2,10 +2,17 @@ import { Pool, PoolConfig, QueryResult, QueryResultRow } from 'pg';
 import { env } from './env.js';
 import { logger } from '../utils/logger.js';
 
+const isCloudDb = Boolean(
+  env.DATABASE_URL?.includes('sslmode=require') ||
+  env.DATABASE_URL?.includes('neon.tech') ||
+  env.DATABASE_URL?.includes('supabase.co') ||
+  env.DATABASE_URL?.includes('pooler.supabase.com')
+);
+
 const poolConfig: PoolConfig = env.DATABASE_URL
   ? {
       connectionString: env.DATABASE_URL,
-      ssl: env.PGSSL ? { rejectUnauthorized: false } : false,
+      ssl: (env.PGSSL || isCloudDb) ? { rejectUnauthorized: false } : false,
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 5000,

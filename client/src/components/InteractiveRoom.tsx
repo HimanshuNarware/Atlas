@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FileText, Paperclip, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { api } from '../services/api';
 import { AnimalPortrait } from './HilosArt';
 import { DocUploadResponse, DocAnsResponse, DocHistoryItem } from '../types';
@@ -314,8 +315,9 @@ export const InteractiveRoom: React.FC = () => {
                           marginBottom: '0.5rem',
                         }}
                       >
-                        <div style={{ color: 'var(--text-muted)', fontWeight: 600, marginBottom: '0.15rem' }}>
-                          📄 Document Citation (Page {m.prCard.citation.page}):
+                        <div style={{ color: 'var(--text-muted)', fontWeight: 600, marginBottom: '0.15rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <FileText size={14} />
+                          <span>Document Citation (Page {m.prCard.citation.page}):</span>
                         </div>
                         <div style={{ fontStyle: 'italic', color: 'var(--text-main)' }}>
                           "{m.prCard.citation.excerpt}"
@@ -327,7 +329,8 @@ export const InteractiveRoom: React.FC = () => {
                     {m.prCard.caveats.length > 0 && (
                       <div style={{ marginBottom: '0.5rem', fontSize: '0.75rem' }}>
                         <div style={{ color: 'var(--color-amber)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                          ⚠ Caveats
+                          <AlertTriangle size={13} />
+                          <span>Caveats</span>
                         </div>
                         <ul style={{ paddingLeft: '1.2rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
                           {m.prCard.caveats.map((c, i) => (
@@ -351,7 +354,9 @@ export const InteractiveRoom: React.FC = () => {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                         {m.prCard.approved ? (
                           <>
-                            <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>✓ Approved</span>
+                            <span style={{ color: 'var(--color-green)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                              <CheckCircle2 size={13} /> Approved
+                            </span>
                             <span style={{ color: 'var(--text-muted)' }}>by Caro. Ready to ship.</span>
                           </>
                         ) : (
@@ -401,8 +406,9 @@ export const InteractiveRoom: React.FC = () => {
       {/* Input & Upload Bar */}
       <div style={{ borderTop: '1px solid var(--border-subtle)', padding: '0.75rem 1rem', background: '#FAFAFA' }}>
         {uploadStatus && (
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-green)', marginBottom: '0.4rem' }}>
-            ✓ {uploadStatus}
+          <div style={{ fontSize: '0.75rem', color: 'var(--color-green)', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+            <CheckCircle2 size={13} />
+            <span>{uploadStatus}</span>
           </div>
         )}
         <form onSubmit={handleSendMessage} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
@@ -423,7 +429,10 @@ export const InteractiveRoom: React.FC = () => {
               flexShrink: 0,
             }}
           >
-            <span>📎 {selectedFile ? selectedFile.name.slice(0, 14) + '...' : 'PDF'}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <Paperclip size={13} />
+              <span>{selectedFile ? selectedFile.name.slice(0, 14) + '...' : 'PDF'}</span>
+            </span>
             <input
               type="file"
               style={{ display: 'none' }}
@@ -464,8 +473,9 @@ export const InteractiveRoom: React.FC = () => {
         <div style={{ padding: '0.5rem 1rem', background: '#F1F2EE', borderTop: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
           <span>Repo Documents:</span>
           {historyItems.map((item) => (
-            <span key={item.id} style={{ background: '#ffffff', padding: '0.15rem 0.5rem', borderRadius: '4px', border: '1px solid var(--border-subtle)', color: 'var(--text-main)' }}>
-              📄 {item.title}
+            <span key={item.id} style={{ background: '#ffffff', padding: '0.15rem 0.5rem', borderRadius: '4px', border: '1px solid var(--border-subtle)', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <FileText size={12} />
+              <span>{item.title}</span>
             </span>
           ))}
         </div>

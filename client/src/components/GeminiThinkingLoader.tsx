@@ -81,9 +81,9 @@ export const GeminiThinkingLoader: React.FC<GeminiThinkingLoaderProps> = ({
           display: 'inline-flex',
           alignItems: 'center',
           gap: '0.45rem',
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--card-bg, #ffffff)',
           border: '1px solid var(--border-strong)',
-          borderRadius: '9999px',
+          borderRadius: 'var(--radius-sm, 0.375rem)',
           padding: '0.2rem 0.65rem',
           boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
         }}
@@ -109,9 +109,9 @@ export const GeminiThinkingLoader: React.FC<GeminiThinkingLoaderProps> = ({
     return (
       <div
         style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--card-bg, #ffffff)',
           border: '1px dashed var(--border-strong)',
-          borderRadius: '1rem',
+          borderRadius: 'var(--radius-md, 0.5rem)',
           padding: '1.25rem 1rem',
           display: 'flex',
           flexDirection: 'column',
@@ -121,7 +121,7 @@ export const GeminiThinkingLoader: React.FC<GeminiThinkingLoaderProps> = ({
           gap: '0.65rem',
           position: 'relative',
           overflow: 'hidden',
-          background: 'radial-gradient(circle at 50% 30%, rgba(217, 119, 6, 0.08), transparent 70%), #ffffff',
+          background: 'radial-gradient(circle at 50% 30%, rgba(217, 119, 6, 0.08), transparent 70%), var(--card-bg, #ffffff)',
         }}
       >
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -164,7 +164,7 @@ export const GeminiThinkingLoader: React.FC<GeminiThinkingLoaderProps> = ({
           style={{
             width: '140px',
             height: '3px',
-            backgroundColor: 'rgba(20, 21, 16, 0.08)',
+            backgroundColor: 'var(--border-subtle, rgba(20, 21, 16, 0.08))',
             borderRadius: '9999px',
             overflow: 'hidden',
             marginTop: '0.2rem',
@@ -183,12 +183,11 @@ export const GeminiThinkingLoader: React.FC<GeminiThinkingLoaderProps> = ({
         display: 'inline-flex',
         alignItems: 'center',
         gap: '0.65rem',
-        padding: '0.55rem 0.95rem',
-        borderRadius: '9999px',
-        backgroundColor: '#ffffff',
+        padding: '0.45rem 0.85rem',
+        borderRadius: 'var(--radius-sm, 0.375rem)',
+        backgroundColor: 'var(--card-bg-subtle, #FAF9F5)',
         border: '1px solid var(--border-subtle)',
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.04)',
-        background: '#FAF9F5',
       }}
     >
       <ClaudeStarIcon size={16} />

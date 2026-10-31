@@ -31,6 +31,14 @@ export const api = {
     return res.json();
   },
 
+  async getMe(token: string): Promise<ApiResponse<User>> {
+    const res = await fetch(`${BASE_URL}/userrouter/me`, {
+      method: 'GET',
+      headers: getHeaders(token),
+    });
+    return res.json();
+  },
+
   async createUser(payload: {
     email: string;
     name: string;

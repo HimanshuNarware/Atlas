@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { userService, UserService } from '../services/user.service.js';
 import { sendSuccess } from '../utils/response.js';
+import { UnauthorizedError } from '../errors/app-error.js';
 
 export class UserController {
   constructor(private readonly userServ: UserService = userService) {}
@@ -47,6 +48,18 @@ export class UserController {
     try {
       const result = await this.userServ.deleteUser(req.params['id'] as string);
       sendSuccess(res, result, result.message, 200);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getMe = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      if (!req.user || !req.user.id) {
+        throw new UnauthorizedError('Authentication token missing or invalid');
+      }
+      const user = await this.userServ.getUserById(req.user.id);
+      sendSuccess(res, user, 'Current user profile retrieved successfully', 200);
     } catch (error) {
       next(error);
     }

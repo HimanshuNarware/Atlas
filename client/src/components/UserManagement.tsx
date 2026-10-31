@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CheckCircle2 } from 'lucide-react';
 import { api } from '../services/api';
 import { User, LoginResponse } from '../types';
 
@@ -385,7 +386,10 @@ export const UserManagement: React.FC = () => {
                     </td>
                     <td style={{ padding: '0.75rem' }}>
                       {u.approve ? (
-                        <span style={{ color: '#10b981' }}>✓ Approved</span>
+                        <span style={{ color: '#10b981', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                          <CheckCircle2 size={13} />
+                          <span>Approved</span>
+                        </span>
                       ) : (
                         <span style={{ color: '#f59e0b' }}>Pending</span>
                       )}
